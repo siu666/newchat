@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
-router.get('/get',function(req,res,next){
+router.post('/get',function(req,res,next){
       res.json({
         status:"1"
       })
