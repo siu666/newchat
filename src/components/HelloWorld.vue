@@ -97,7 +97,16 @@ export default {
     axios.post('/users/get',{ab:'1'}).then(res=>{
          console.log(res)
     })
+    this.$socket.emit('emit_method', {data:"123"})
   },
+  socket:{
+      connection(data){
+         console.log(data)
+      },
+      login(DATA){
+        console.log(DATA)
+      }
+  }
 
 }
 </script>

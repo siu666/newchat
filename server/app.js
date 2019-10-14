@@ -6,9 +6,18 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+const server=require('http').Server(app)
+const io=require('socket.io')(server)
 var app = express();
-
+server.listen(8081,function(){
+  console.log('Node app start at port 3000')
+})
+io.sockets.on('connection', (socket) => {
+  console.log('链接成功');
+  socket.on('emit_method', (DATA) => {
+  io.sockets.emit('login', 'ok');
+  });   
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

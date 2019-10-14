@@ -5,7 +5,12 @@ import App from './App'
 import router from './router'
 
 Vue.config.productionTip = false
-
+import VueSocketio from 'vue-socket.io';
+import socketio from 'socket.io-client';
+Vue.use(new VueSocketio({
+  debug: true,
+  connection: 'http://localhost:8081',
+}))
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
