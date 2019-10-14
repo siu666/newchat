@@ -97,8 +97,16 @@ export default {
     axios.post('/users/get',{ab:'1'}).then(res=>{
          console.log(res)
     })
+    setInterval(()=>{
+          this.$socket.emit('emit_method', {data:"123"})
+
+    },1000)
     this.$socket.emit('emit_method', {data:"123"})
+    this.sockets.subscribe('login', (data) => {
+    console.log(data)
+});//全局注册监听
   },
+  
   socket:{
       connection(data){
          console.log(data)
