@@ -1,85 +1,8 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+     <p>当前用户{{user}}</p>
+     <input v-model="value" /><button @click="send">发送</button>
+     <p v-for="(item,index) in talkList" :key="index"></p>
   </div>
 </template>
 
@@ -90,23 +13,31 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      user:"",
+      talkList:[],
+      value:""
     }
   },
   created(){
+     var location =this.$route.query;//获取浏览器输入地址
+     this.user=location.user
     axios.post('/users/get',{ab:'1'}).then(res=>{
          console.log(res)
     })
-    setInterval(()=>{
-          this.$socket.emit('emit_method', {data:"123"})
 
-    },1000)
-    this.$socket.emit('emit_method', {data:"123"})
+          this.$socket.emit('enter', {data:this.user})
+
+
+    // this.$socket.emit('emit_method', {data:"123"})
     this.sockets.subscribe('login', (data) => {
-    console.log(data)
-});//全局注册监听
+         console.log(data)
+    });//全局注册监听
+    this.sockets.subscribe('message', (data) => {
+         console.log(data)
+    });//全局注册监听
   },
-  
+
   socket:{
       connection(data){
          console.log(data)
@@ -114,6 +45,11 @@ export default {
       login(DATA){
         console.log(DATA)
       }
+  },
+  methods:{
+    send(val){
+          this.$socket.emit('send', {from:this.user,value:this.value,to:'345'})
+    }
   }
 
 }
