@@ -17,16 +17,16 @@ io.sockets.on('connection', (socket) => {
   console.log('链接成功');
 
   socket.on('enter', (DATA) => {
-    console.log(socket.id)
-    array[DATA.data]=socket
-    console.log(array)
+    if(!array[DATA.data]){
+      array[DATA.data]=socket
+
+    }
     // userObj[DATA.data]=DATA.data;
     console.log('用户'+DATA.data+'进入')
-    io.sockets.emit('login', 'ok');
   });
   socket.on('send', (DATA) => {
-    console.log(array[DATA.to])
-    array[DATA.to].emit('message','123333')
+    console.log(DATA)
+    array[DATA.to].emit('message',DATA)
     // var toSocket = _.findWhere(io.sockets.sockets, {id: to});
     // toSocket.emit('')
   });
