@@ -5,8 +5,8 @@
 
        <div class="chatContainer">
 
-           <!-- <nav-left :username="user"></nav-left>
-           <div></div> -->
+           <nav-left :username="user"></nav-left>
+           <talk></talk>
        </div>
 
   </div>
@@ -14,6 +14,7 @@
 
 <script>
 import NavLeft from './Nav.vue'
+import talk from './talk'
 import backGround from './bg.vue'
 
 import axios from 'axios'
@@ -21,7 +22,8 @@ export default {
 
 components:{
      backGround,
-     NavLeft
+     NavLeft,
+     talk
    },
   name: 'HelloWorld',
   data () {
@@ -77,15 +79,16 @@ components:{
      .chatContainer{
        top:50%;
        left: 50%;
-       margin-top: -250px;
-       margin-left: -50px;
+       margin-top: -325px;
+       margin-left: -500px;
 
-       width: 100px;
+       width: 1000px;
        background-color: #ffffff;
-       height: 500px;
+       height: 650px;
        position: absolute;
 
        z-index: 99;
+       display: flex;
      }
    }
 </style>

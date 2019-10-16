@@ -25,9 +25,9 @@ export default {
 </script>
 <style lang="scss">
 .nav{
-  flex:1;
+  // flex:1;
   // height: 100vh;
-  width: 200px;
+  width: 300px;
   background-color:#ffffff;
 }
 
