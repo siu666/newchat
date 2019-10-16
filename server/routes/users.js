@@ -10,5 +10,17 @@ router.post('/get',function(req,res,next){
         status:"1"
       })
 })
+let user={'123':"123",'234':'234'}
+router.all('/login',function(req,res,next){
+      if(user[req.body.user]&&user[req.body.user]==req.body.password){
+        res.json({
+           status:"0"
+        })
+      }else{
+        res.json({
+          status:"400"
+        })
+      }
 
+})
 module.exports = router;

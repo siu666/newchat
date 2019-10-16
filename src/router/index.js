@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Chat from '@/components/Chat'
 import Login from '@/components/Login'
-
-// import VueSocketio from 'vue-socket.io'
-//   Vue.use(VueSocketio, 'ws://localhost:8081')
 Vue.use(Router)
 
 export default new Router({
@@ -12,14 +9,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'login',
+      component: Login
 
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
+      path: '/Chat',
+      name: 'Chat',
+      component: Chat
 
     }
   ]

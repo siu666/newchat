@@ -1,15 +1,28 @@
 <template>
-  <div class="hello">
-     <p>当前用户{{user}}</p>
-     <input v-model="value" /><button @click="send">发送</button>
-     <p v-for="(item,index) in talkList" :key="index"  class="item"><span :style="item.from==user?'float:right':'float:left'">{{item.value}}</span></p>
+  <div class="chat">
+        <back-ground></back-ground>
+
+
+       <div class="chatContainer">
+
+           <!-- <nav-left :username="user"></nav-left>
+           <div></div> -->
+       </div>
+
   </div>
 </template>
 
 <script>
+import NavLeft from './Nav.vue'
+import backGround from './bg.vue'
+
 import axios from 'axios'
 export default {
 
+components:{
+     backGround,
+     NavLeft
+   },
   name: 'HelloWorld',
   data () {
     return {
@@ -20,13 +33,10 @@ export default {
     }
   },
   created(){
-     var location =this.$route.query;//获取浏览器输入地址
-     this.user=location.user
-    axios.post('/users/get',{ab:'1'}).then(res=>{
-         console.log(res)
-    })
+     this.user=this.$route.params.user
 
-          this.$socket.emit('enter', {data:this.user})
+
+          // this.$socket.emit('enter', {data:this.user})
 
 
     // this.$socket.emit('emit_method', {data:"123"})
@@ -57,24 +67,25 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.item{
-   width: 100%;
-   display: block;
-   height: 30px;
-}
+<style lang="scss">
+   .chat{
+     display: flex;
+    //  align-items: center;
+    //  justify-content: center;
+     height: 100vh;
+     position: relative;
+     .chatContainer{
+       top:50%;
+       left: 50%;
+       margin-top: -250px;
+       margin-left: -50px;
+
+       width: 100px;
+       background-color: #ffffff;
+       height: 500px;
+       position: absolute;
+
+       z-index: 99;
+     }
+   }
 </style>
