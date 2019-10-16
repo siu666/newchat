@@ -5,8 +5,8 @@
 
        <div class="chatContainer">
 
-           <nav-left :username="user"></nav-left>
-           <talk></talk>
+           <nav-left :username="user" @goChat="goChat"></nav-left>
+           <talk :to="to" :user="user"></talk>
        </div>
 
   </div>
@@ -23,15 +23,16 @@ export default {
 components:{
      backGround,
      NavLeft,
-     talk
+     talk,
    },
   name: 'HelloWorld',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       user:"",
-      talkList:[],
-      value:""
+      chatList:[],
+      value:"",
+      to:""
     }
   },
   created(){
@@ -42,26 +43,17 @@ components:{
 
 
     // this.$socket.emit('emit_method', {data:"123"})
-    this.sockets.subscribe('login', (data) => {
-         console.log(data)
-    });//全局注册监听
-    this.sockets.subscribe('message', (data) => {
-         this.talkList.push(data)
-    });//全局注册监听
+   
   },
 
-  socket:{
-      connection(data){
-         console.log(data)
-      },
-      login(DATA){
-        console.log(DATA)
-      }
-  },
+ 
   methods:{
     send(val){
-          this.talkList.push( {from:this.user,value:this.value,to:'345'}  )
-          this.$socket.emit('send', {from:this.user,value:this.value,to:'345'})
+          this.talkList.push( {from:this.user,value:this.value,to:this.to}  )
+          this.$socket.emit('send', {from:this.user,value:this.value,to:this.to})
+    },
+    goChat(item){
+     this.to=item
     }
   }
 

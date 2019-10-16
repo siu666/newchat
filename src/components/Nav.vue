@@ -3,23 +3,31 @@
       <div class="userInfo">
            {{username}}
       </div>
-      <div class="chatList"></div>
+      <div class="chatList">
+       <div v-for="(item,index) in arr" :key="index" @click="goChat(item)">{{item}}</div>
+      </div>
   </div>
 </template>
 <script>
 export default {
    data(){
      return{
-
+     arr:['123','234']
      }
    },
-   created(){
-   },
+   
    props:{
      username:{
        type:String,
        default:""
      }
+   },
+   created(){
+   },
+   methods:{
+         goChat(item){
+           this.$emit('goChat',item)
+         }
    }
 }
 </script>

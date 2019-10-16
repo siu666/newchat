@@ -12,17 +12,18 @@ var app = express();
 server.listen(8081,function(){
   console.log('Node app start at port 3000')
 })
-let array = {};//这里就是缓存于服务器，当然也可以选择redis缓存
+let array = {};
 io.sockets.on('connection', (socket) => {
   console.log('链接成功');
 
   socket.on('enter', (DATA) => {
+    console.log(DATA)
     if(!array[DATA.data]){
       array[DATA.data]=socket
-      console.log('用户'+DATA.data+'进入')
 
     }
     // userObj[DATA.data]=DATA.data;
+    console.log('用户'+DATA.data+'进入')
   });
   socket.on('send', (DATA) => {
     console.log(DATA)
