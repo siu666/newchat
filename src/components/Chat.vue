@@ -1,8 +1,9 @@
 <template>
   <div class="chat">
         <!-- <back-ground></back-ground> -->
-
+       <!-- <header>Chat</header> -->
        <component :is="comp"></component>
+       
        <!-- <div class="chatContainer">
 
            <nav-left :username="user" @goChat="goChat"></nav-left>
