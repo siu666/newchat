@@ -49,6 +49,7 @@ created(){
         console.log(DATA)
       }
   },
+  
 methods:{
   send(val){
         this.chatList.push( {from:this.user,value:this.value,to:this.to}  )
