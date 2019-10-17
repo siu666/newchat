@@ -15,7 +15,7 @@ export default {
      arr:['123','234']
      }
    },
-   
+
    props:{
      username:{
        type:String,
@@ -36,7 +36,7 @@ export default {
   // flex:1;
   // height: 100vh;
   width: 300px;
-  background-color:#ffffff;
+  background-color:#2e3238;
 }
 
 </style>

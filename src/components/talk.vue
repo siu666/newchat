@@ -1,9 +1,9 @@
 <template>
     <div class="talk">
             <chat-header :to="to"></chat-header>
-            <chat-board :chatList="chatList"></chat-board>
+            <chat-board :chatList="chatList" :user="user" ref="chatBoard"></chat-board>
 
-      <test @getData="getData" @send="send" ></test>
+            <test @getData="getData" @send="send" v-if="to"></test>
     </div>
 </template>
 <script>
@@ -39,6 +39,10 @@ created(){
     this.sockets.subscribe('message', (data) => {
          console.log(data)
          this.chatList.push(data)
+         this.$nextTick(()=>{
+          this.$refs.chatBoard.toBottom()
+        })
+        //  this.refs.chatBoard.toBottom()
     });//全局注册监听
 },
  socket:{
@@ -53,6 +57,9 @@ methods:{
   send(val){
         this.chatList.push( {from:this.user,value:this.value,to:this.to}  )
         console.log(this.to)
+        this.$nextTick(()=>{
+          this.$refs.chatBoard.toBottom()
+        })
           this.$socket.emit('send', {from:this.user,value:this.value,to:this.to})
   },
   getData(val){
