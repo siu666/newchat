@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
+      <script>
+       
+          (function() {
+                   remLayout();
+        
+                   function remLayout() {
+                       var w = document.documentElement.clientWidth;
+                       w = w > 768 ? 768 : w;
+                       w = w <= 320 ? 320 : w;
+                       document.documentElement.style.fontSize = w / 7.5 + 'px';
+                   }
+                   window.addEventListener('resize', function() {
+                       remLayout();
+                   }, false);
+               })();
+         </script>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
     <title>newchat</title>
   </head>
   <link rel="stylesheet" href="./static/css/reset.css">
@@ -10,5 +27,6 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  
 </html>
 

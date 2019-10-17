@@ -50,8 +50,8 @@ methods:{
         .box{
           background:rgba(255,255,255,0.8);
           position:absolute;
-             width: 350px;
-             height:350px;
+             width: 250px;
+             height:250px;
              border:1px solid #eeeeee;
              border-radius: 10px;
              .title{
@@ -61,22 +61,23 @@ methods:{
                font-size: 25px;
              }
              .el-input{
-                 width: 200px;
+                 width: 140px;
              }
              .el-button{
 
                  display: block;
-                 margin: 50px auto 0 auto;
+                 margin: 20px auto 0 auto;
              }
              .content{
                display: flex;
                align-items: center;
                  .front{
+                   font-size: 14px;
                  display: inline-block;
-                 width: 100px;
-                 line-height: 50px;
+                 width: 65px;
+                 line-height: 16px;
                  font-weight: bold;
-                 height: 50px;
+                 height: 16px;
                  text-align: center;
 
              }

@@ -1,13 +1,13 @@
 <template>
   <div class="chat">
-        <back-ground></back-ground>
+        <!-- <back-ground></back-ground> -->
 
-
-       <div class="chatContainer">
+       <component :is="comp"></component>
+       <!-- <div class="chatContainer">
 
            <nav-left :username="user" @goChat="goChat"></nav-left>
            <talk :to="to" :user="user"></talk>
-       </div>
+       </div> -->
 
   </div>
 </template>
@@ -32,7 +32,8 @@ components:{
       user:"",
       chatList:[],
       value:"",
-      to:""
+      to:"",
+      comp:''
     }
   },
   created(){
