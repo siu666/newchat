@@ -3,7 +3,7 @@
         <!-- <back-ground></back-ground> -->
        <!-- <header>Chat</header> -->
        <component :is="comp"></component>
-       
+       <tab-bar></tab-bar>
        <!-- <div class="chatContainer">
 
            <nav-left :username="user" @goChat="goChat"></nav-left>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import TabBar from './tab'
 import NavLeft from './Nav.vue'
 import talk from './talk'
 import backGround from './bg.vue'
@@ -25,6 +26,7 @@ components:{
      backGround,
      NavLeft,
      talk,
+     TabBar
    },
   name: 'HelloWorld',
   data () {
