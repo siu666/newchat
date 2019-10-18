@@ -19,8 +19,8 @@ export default {
 <style lang="scss">
   .chatter{
       width: 100%;
-      
-      
-      height: 60px;
+
+
+      height: 0.6rem
   }
 </style>

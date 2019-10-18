@@ -2,20 +2,21 @@
 <html>
   <head>
       <script>
-       
-          (function() {
-                   remLayout();
-        
-                   function remLayout() {
-                       var w = document.documentElement.clientWidth;
-                       w = w > 768 ? 768 : w;
-                       w = w <= 320 ? 320 : w;
-                       document.documentElement.style.fontSize = w / 7.5 + 'px';
-                   }
-                   window.addEventListener('resize', function() {
-                       remLayout();
-                   }, false);
-               })();
+
+       (function (doc, win) {
+            var docEl = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc = function () {
+                    var clientWidth = docEl.clientWidth;
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                };
+            if (!doc.addEventListener) {
+                return;
+            }
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+            recalc()
+        })(document, window)
          </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
@@ -27,6 +28,6 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
-  
+
 </html>
 

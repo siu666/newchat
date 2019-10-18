@@ -1,5 +1,5 @@
 <template>
-    <div class="talk">
+    <div class="talk" id="talk"  @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
             <chat-header :to="to"></chat-header>
             <chat-board :chatList="chatList" :user="user" ref="chatBoard"></chat-board>
 
@@ -7,6 +7,7 @@
     </div>
 </template>
 <script>
+import {addListen} from './inout'
 import chatHeader from './talkComp/header'
 import ChatBoard from './talkComp/chatBoard'
 import Test from './talkComp/test'
@@ -32,7 +33,11 @@ components:{
   ChatBoard,
   chatHeader
 },
+mounted(){
+  addListen();
+},
 created(){
+
    this.sockets.subscribe('login', (data) => {
          console.log(data)
     });//全局注册监听
@@ -53,8 +58,11 @@ created(){
         console.log(DATA)
       }
   },
-  
+
 methods:{
+  touchStart(e){
+    // console.log(e)
+  },
   send(val){
         this.chatList.push( {from:this.user,value:this.value,to:this.to}  )
         console.log(this.to)
@@ -72,6 +80,10 @@ methods:{
 </script>
 <style lang="scss">
   .talk{
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 99;
     display: flex;
     flex-direction: column;
     flex:1;
