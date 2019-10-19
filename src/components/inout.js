@@ -7,12 +7,15 @@ function addListen(Fn){
         startX=e.changedTouches[0].pageX
   },false)
   document.getElementById("talk").addEventListener('touchmove',(e)=>{
+    e.preventDefault();
+                e.stopPropagation();
     if(startX<50){
       document.getElementById("talk").style.transform='translate3d('+e.touches[0].clientX+'px,0,0)'
     }
 
 },false)
 document.getElementById("talk").addEventListener('touchend',(e)=>{
+  // if(startX>50){}
   if(e.changedTouches[0].pageX>200){
     destory=true
     document.getElementById("talk").style.transition='0.2s'
