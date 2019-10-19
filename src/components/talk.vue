@@ -1,5 +1,5 @@
 <template>
-    <div class="talk" id="talk"  @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
+    <div class="talk" id="talk"  >
             <chat-header :to="to"></chat-header>
             <chat-board :chatList="chatList" :user="user" ref="chatBoard"></chat-board>
 
@@ -34,7 +34,10 @@ components:{
   chatHeader
 },
 mounted(){
-  addListen();
+  setTimeout(()=>{
+  addListen(this.set);
+
+  },300)
 },
 created(){
 
@@ -60,6 +63,10 @@ created(){
   },
 
 methods:{
+  set(){
+
+    this.$emit('destory')
+  },
   touchStart(e){
     // console.log(e)
   },

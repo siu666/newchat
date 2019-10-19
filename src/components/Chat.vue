@@ -4,7 +4,7 @@
        <!-- <header>Chat</header> -->
        <transition name="move">
 
-          <talk v-if="to" :to="to"></talk>
+          <talk v-if="to" :to="to" @destory="destory"></talk>
        </transition>
        <keep-alive>
           <component :is="comp" @goChat="goChat"></component>
@@ -82,6 +82,9 @@ components:{
 
 
   methods:{
+    destory(){
+     this.to=''
+    },
     goChat(val){
         this.to=val.name
     },
