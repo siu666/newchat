@@ -3,16 +3,21 @@
           <textarea ref="textarea" class="tarea" :style="{height:height+'rem'}"  v-model="value" @input="onput" @keydown="keyDw" :autofocus="true" @scroll="rowScroll">
 
           </textarea>
+          <!-- <auto-text-area placeholder="" lineHeight="30px" border="false" fontSize="18px" :value="value" :onchange="onput"/> -->
          <!-- <div class="bottom"><span class="tips">Ctrl+Enter换行</span><el-button @click.native="send">发送</el-button></div> -->
     </div>
 </template>
 <script>
+//  import {} from 'a'
 export default {
     data(){
         return{
            value:'',
            height:0.5
         }
+    },
+    components:{
+      // autoTextarea
     },
     methods:{
       rowScroll(e){
@@ -56,7 +61,7 @@ textarea{
     position:absolute;
     bottom:0px;
       border: 1px solid black;
-      border-radius: 0.15rem;
+      border-radius: 0.25rem;
     width: 7rem;
     background-color: #ffffff;
     // height: 100px;
