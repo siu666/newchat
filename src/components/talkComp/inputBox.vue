@@ -1,8 +1,16 @@
 <template>
-    <div class="inputBox">
-          <textarea ref="textarea" class="tarea" :style="{height:height+'rem'}"  v-model="value" @input="onput" @keydown="keyDw" :autofocus="true" @scroll="rowScroll">
+    <div class="inputBox" ref="box" :style="{height:height+'px',transition:'0.2s'}">
+          <!-- <textarea ref="textarea" class="tarea" :style="{height:height+'rem'}"  v-model="value" @input="onput" @keydown="keyDw" :autofocus="true" @scroll="rowScroll">
 
-          </textarea>
+          </textarea> -->
+          <el-input
+          :style="{marginBottom:marginBottom}"
+          ref='textArea'
+  type="textarea"
+  autosize
+  placeholder="请输入内容"
+  v-model="textarea1">
+</el-input>
          <!-- <div class="bottom"><span class="tips">Ctrl+Enter换行</span><el-button @click.native="send">发送</el-button></div> -->
     </div>
 </template>
@@ -10,9 +18,34 @@
 export default {
     data(){
         return{
-           value:'',
-           height:0.5
+           textarea1:'',
+           heightArray:[],
+           height:'0',
+           marginBottom:'',
         }
+    },
+    computed:{
+       
+    },
+    watch:{
+      textarea1(){
+           let height=this.$refs.textArea.$refs.textarea.offsetHeight+5
+
+           this.height=height;
+           this.$emit('setHeight',height)
+          //  this.marginBottom=-this.$refs.textArea.$refs.textarea.offsetHeight/2+'px'
+
+          // this.height=this.$refs.textArea.$refs.textarea.offsetHeight+this.$refs.box.offsetHeight
+      }
+    },
+    mounted(){
+      this.$nextTick(()=>{
+        this.height=this.$refs.textArea.$refs.textarea.offsetHeight+5;
+        this.$emit('setHeight',this.height)
+        // console.log(this.$refs.textArea)
+        // this.marginBottom=-this.$refs.textArea.$refs.textarea.offsetHeight/2+'px'
+      })
+        
     },
     methods:{
       rowScroll(e){
@@ -48,21 +81,27 @@ export default {
   bottom:0;
   left: 0;
   width:100%;
-  background-color: #ffffff;
-  height: 40px;
+  background-color: red;
+  display: flex;
+  align-items: center;
+  // height: 40px;
   // display: flex;
   // align-items: center;
+  .el-textarea{
+    // padding: 10px 0;
+    // position:absolute;
+    // bottom: 50%;
 textarea{
-    position:absolute;
-    bottom:0px;
-      border: 1px solid black;
+    
+    // position:absolute;
+    // bottom:0px;
       border-radius: 0.15rem;
     width: 7rem;
     background-color: #ffffff;
     // height: 100px;
     // line-height: 1;
     // height: 0.28rem;
-    font-size: 0.5rem;
+    // font-size: 0.5rem;
     // width: 100%;
     resize: none;
     // border:none;
@@ -73,6 +112,8 @@ textarea{
     // padding-left:0.1rem;
     box-sizing: border-box;
 }
+  }
+
 .tarea{
   //  border-top:1px solid #d6d6d6;
   //  margin-right: 12px;

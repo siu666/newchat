@@ -1,9 +1,9 @@
 <template>
     <div class="talk" id="talk"  >
             <chat-header :to="to"></chat-header>
-            <chat-board :chatList="chatList" :user="user" ref="chatBoard"></chat-board>
+            <chat-board :chatList="chatList" :user="user" ref="chatBoard" :cut="cut" ></chat-board>
 
-            <test @getData="getData" @send="send" v-if="to"></test>
+            <test @getData="getData" @send="send" v-if="to" @setHeight="setHeight"></test>
     </div>
 </template>
 <script>
@@ -16,6 +16,7 @@ export default {
       return{
          value:"",
          chatList:[],
+         cut:"",
       }
     },
     props:{
@@ -69,6 +70,9 @@ methods:{
   },
   touchStart(e){
     // console.log(e)
+  },
+  setHeight(val){
+      this.cut=val
   },
   send(val){
         this.chatList.push( {from:this.user,value:this.value,to:this.to}  )

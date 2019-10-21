@@ -1,5 +1,5 @@
 <template>
-    <div class="chatBoard" ref="chatBoard">
+    <div class="chatBoard" ref="chatBoard" :style="{height:height}">
        <p v-for="(item,index) in chatList" :key="index" :style="{textAlign:item.from==user?'right':'left'}">{{item.value}}</p>
     </div>
 </template>
@@ -11,6 +11,10 @@ export default {
         }
     },
     props:{
+        cut:{
+            type:Number,
+            default:''
+        },
         user:{
           type:String,
           default:""
@@ -20,6 +24,11 @@ export default {
             default:function(){
                 return []
             }
+        }
+    },
+    computed:{
+        height(){
+            return `calc(100vh - ${this.cut}px)`
         }
     },
     mounted(){
