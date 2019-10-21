@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+//  import {} from 'a'
 export default {
     data(){
         return{
@@ -45,7 +46,9 @@ export default {
         // console.log(this.$refs.textArea)
         // this.marginBottom=-this.$refs.textArea.$refs.textarea.offsetHeight/2+'px'
       })
-        
+    } ,
+    components:{
+      // autoTextarea
     },
     methods:{
       rowScroll(e){

@@ -7,8 +7,9 @@ function addListen(Fn){
         startX=e.changedTouches[0].pageX
   },false)
   document.getElementById("talk").addEventListener('touchmove',(e)=>{
+    //防止页面回弹的冒泡
     e.preventDefault();
-                e.stopPropagation();
+    e.stopPropagation();
     if(startX<50){
       document.getElementById("talk").style.transform='translate3d('+e.touches[0].clientX+'px,0,0)'
     }
@@ -16,7 +17,7 @@ function addListen(Fn){
 },false)
 document.getElementById("talk").addEventListener('touchend',(e)=>{
   // if(startX>50){}
-  if(e.changedTouches[0].pageX>200){
+  if(e.changedTouches[0].pageX-startX>200){
     destory=true
     document.getElementById("talk").style.transition='0.2s'
     document.getElementById("talk").style.transform='translate3d(7.5rem,0,0)'
