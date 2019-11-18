@@ -7,7 +7,7 @@
 
                         </div>
 
-        
+
 
       </better-scroll>
     </div>
@@ -102,7 +102,7 @@ export default {
       // float: right;
       // text-align: right;
       .item{
-        font-size: .28rem;
+        font-size: .32rem;
         max-width: 3.5rem;
         word-break: break-all;
         overflow: hidden;

@@ -85,7 +85,12 @@ methods:{
     // console.log(e)
   },
   setHeight(val){
+
       this.cut=Number(val)+Number(this.$refs.header.$el.offsetHeight);
+      this.$refs.chatBoard.$refs.scroll.refresh();
+      this.$nextTick(()=>{
+          this.$refs.chatBoard.toBottom();
+      })
   },
   send(val){
         this.$store.dispatch('goSetChatList',{from:this.user,value:val,chatter:this.chatter,isRecv:false,isGroup:this.chatter.length>1,chatId:this.$store.state.currentChatId})

@@ -19,6 +19,7 @@
 
 </el-input>
 <el-button class="sendButton" type="info" icon="el-icon-message" circle @click="sendMSG"></el-button>
+<img class="photoButton" :src="require('../../../static/photo.jpg')" @click="choosePhoto" />
 </div>
 
 
@@ -61,11 +62,25 @@ export default {
       // autoTextarea
     },
     methods:{
+      choosePhoto(){
+        alert('2')
+         let cmr = plus.camera.getCamera();
+     cmr.captureImage(function(p) {
+      plus.io.resolveLocalFileSystemURL(p, function(entry) {
+       compressImage(entry.toLocalURL(),entry.name);
+      }, function(e) {
+       plus.nativeUI.toast("读取拍照文件错误：" + e.message);
+      });
+     }, function(e) {
+     }, {
+      filter: 'image'
+     });
+      },
       oninput(){
         setTimeout(() => {
           this.contentheight=this.$refs.textArea.$refs.textarea.offsetHeight+5;
 
-        this.$emit('setHeight',this.contentheight)
+         this.$emit('setHeight',this.contentheight)
         }, 1);
 
             // this.height=this.$refs.textArea.scrollHeight+2+'px'
@@ -141,7 +156,7 @@ textarea{
     // position:absolute;
     // bottom:0px;
       border-radius: 0.2rem;
-    width: 6.5rem;
+    width: 6rem;
     background-color: #ffffff;
     // height: 100px;
     // line-height: 1;
@@ -166,10 +181,17 @@ textarea{
   //  width: calc(100vw - 32px)
 }
 .sendButton{
-  right: 0.08rem;
+  right: 0.6rem;
   bottom:0.08rem;
   position:absolute;
   padding: 0.1rem;
+}
+.photoButton{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+   width: 0.6rem;
+   height: 0.6rem;
 }
   }
 
