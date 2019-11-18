@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input-box v-bind="$attrs" v-on="$listeners"></input-box>  
+        <input-box v-bind="$attrs" v-on="$listeners"></input-box>
     </div>
 </template>
 <script>
@@ -18,7 +18,7 @@ export default {
     methods:{
       onput(val){
           this.$emit('getData',this.value)
-      }  
+      }
     },
 }
 </script>

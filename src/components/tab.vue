@@ -21,10 +21,9 @@ export default {
     },
     mounted(){
 
- console.log(document.getElementById("chat"))
-      var div=document.createElement("DIV");
-      div.className='blank';//
-       document.getElementById("chat").appendChild(div);
+      // var div=document.createElement("DIV");
+      // div.className='blank';//
+      //  document.getElementById("chat").appendChild(div);
     },
     created(){
 
@@ -40,6 +39,7 @@ export default {
   height: 1rem;
 }
     .tabbar{
+      z-index: 99;
         position: fixed;
         bottom:0;
         left:0;

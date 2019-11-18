@@ -2,13 +2,19 @@
   <div class="chat" id="chat">
         <!-- <back-ground></back-ground> -->
        <!-- <header>Chat</header> -->
+       <div class="header">Conn</div>
+       <init-group @goChat="goChat"></init-group>
        <transition name="move">
 
-          <talk v-if="to" :to="to" @destory="destory"></talk>
+
+          <talk v-if="currentChatId" :onChatType="onChatType" :chatter="chatter"  :to="to"  :user="userInfo" @destory="destory" :chatList="onChatList" ref="talk"></talk>
        </transition>
-       <keep-alive>
-          <component :is="comp" @goChat="goChat"></component>
+       <div class="tabContent">
+         <keep-alive>
+          <component :allChat="allChat" :is="comp" @goChat="goChat"></component>
        </keep-alive>
+       </div>
+
 
        <tab-bar v-model="value"></tab-bar>
        <!-- <div class="chatContainer">
@@ -29,6 +35,7 @@ import chatComp from './chatComp'
 import User from './User'
 import My from './My'
 import axios from 'axios'
+import initGroup from './initGroup'
 export default {
 
 components:{
@@ -38,18 +45,22 @@ components:{
      TabBar,
      chatComp,
      User,
-     My
+     My,
+     initGroup
    },
-  name: 'HelloWorld',
+  name: 'Chat',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      user:"",
       chatList:[],
       value:"",
       to:"",
-      value:"0"
+      value:"0",
+      currentChatId:'',
+      chatter:[]
     }
+  },
+  watch:{
   },
   computed:{
     comp(){
@@ -67,30 +78,79 @@ components:{
                    break
 
       }
+    },
+    allChat(){
+       return this.$store.state.chatList
+    },
+    userInfo(){
+      return this.$store.state.loginUser
+    },
+    onChatType(){
+      return this.$store.state.chatList.filter(item=>{
+            return item.chatId==this.currentChatId
+        })[0].isGroup
+    },
+    onChatList(){
+      return this.$store.state.chatList.filter(item=>{
+            return item.chatId==this.currentChatId
+        })[0].chatList.sort((a,b)=>{
+                 return a.time - b.time
+        })
     }
   },
   created(){
-     this.user=this.$route.params.user
+     this.sockets.subscribe('getUnread', (data) => {
+       data.forEach(item=>{
+         item.isRecv=true;
+         item.isGroup=item.chatter.length>1
+        this.$store.dispatch('goSetChatList',item)
+       })
+    });
+    this.sockets.subscribe('message', (data) => {
+    //   data.chatter=data.from
+    // if(data.ExitGroup||data.ExitGroup!=undefined){
 
+    // }
+    data.isGroup=data.chatter.length>1;
+    data.isRecv=true;
+     this.$store.dispatch('goSetChatList',data);
+     
+     if(this.currentChatId){
+       setTimeout(()=>{
+        this.$refs.talk.$refs.chatBoard.toBottom()
 
+     },100)
+        //当前正在某个通讯仲
+     }
+    })
           // this.$socket.emit('enter', {data:this.user})
 
 
     // this.$socket.emit('emit_method', {data:"123"})
 
   },
-
-
   methods:{
     destory(){
-     this.to=''
+     this.currentChatId=''
     },
     goChat(val){
-        this.to=val.name
+
+           this.chatter=val.chatter
+           this.currentChatId=this.$store.state.currentChatId
+
+      // this.currentChat=
+        // this.to=val
+
+        // if(!this.allChat.length){
+          //如果聊天记录为空的初始化操作
+            // this.$store.dispatch('goSetChatList',{chatter:[this.to]})
+        // }
+
+        // console.log(this.$store.state.chatList)
     },
     send(val){
-          this.talkList.push( {from:this.user,value:this.value,to:this.to}  )
-          this.$socket.emit('send', {from:this.user,value:this.value,to:this.to})
+          this.talkList.push( {from:this.userInfo,value:this.value,to:this.to}  )
+          this.$socket.emit('send', {from:this.userInfo,value:this.value,to:this.to})
     },
     // goChat(item){
     //  this.to=item
@@ -110,6 +170,20 @@ components:{
     transform: translate3d(100%, 0, 0);
   }
    .chat{
+     .header{
+
+        position: relative;
+        width: 100%;
+        background: #f5f5f5;
+        font-size: .36rem;
+        text-align: center;
+        line-height: 1rem;
+        height: 1rem;
+     }
+     .tabContent{
+        height: calc(100vh - 2rem);
+        overflow-y: scroll;
+     }
       display: flex;
       flex-direction: column;
    }

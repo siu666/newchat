@@ -13,21 +13,46 @@ server.listen(8081,function(){
   console.log('Node app start at port 3000')
 })
 let array = {};
+let unread={}
 io.sockets.on('connection', (socket) => {
   console.log('链接成功');
-
+  socket.on('leave',(data)=>{
+      delete(array[data])
+  })
+  socket.on('ExitGroup',(data)=>{
+       console.log(data)
+  })
   socket.on('enter', (DATA) => {
-    console.log(DATA)
-    if(!array[DATA.data]){
-      array[DATA.data]=socket
+      console.log(socket.id)
+    // if(!array[DATA.data]){
+      array[DATA.data]=socket.id
 
+    // }
+    if(unread[DATA.data]){
+       io.to(array[DATA.data]).emit('getUnread',unread[DATA.data].unreadList)
+       delete(unread[DATA.data])
     }
     // userObj[DATA.data]=DATA.data;
     console.log('用户'+DATA.data+'进入')
   });
   socket.on('send', (DATA) => {
-    console.log(DATA)
-    array[DATA.to].emit('message',DATA)
+    DATA.chatter.forEach(item=>{
+      if(!array[item.userId]){
+
+        if(!unread[item.userId]){
+
+          unread[item.userId]={
+            unreadList:[]
+          }
+        };
+
+         unread[item.userId].unreadList.push(DATA)
+         console.log(unread)
+         return
+      }
+     io.to(array[item.userId]).emit('message',DATA)
+    })
+
     // var toSocket = _.findWhere(io.sockets.sockets, {id: to});
     // toSocket.emit('')
   });
@@ -60,5 +85,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+global.array=array
 module.exports = app;

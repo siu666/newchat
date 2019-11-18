@@ -6,7 +6,13 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created(){
+    window.addEventListener('beforeunload', e => {
+// window.localStorage.removeItem(‘userInfo’)
+    this.$socket.emit('leave',this.$store.state.loginUser.userId)
+});
+  }
 }
 </script>
 

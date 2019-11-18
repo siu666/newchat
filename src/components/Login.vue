@@ -27,10 +27,11 @@ data(){
 methods:{
   login(){
     axios.post('/users/login',{user:this.user,password:this.value}).then(res=>{
-      console.log(res)
        if(res.data.status=='0'){
-          this.$socket.emit('enter', {data:this.user})
-          this.$router.push({ name:'Chat',params:{user:this.user}})
+
+          this.$store.dispatch('gosetLogin',res.data.userInfo)
+          this.$socket.emit('enter', {data:res.data.userInfo.userId})
+          this.$router.push({ name:'Chat',params:{user:res.userInfo}})
        }
     })
   }

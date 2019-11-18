@@ -1,16 +1,27 @@
 <template>
-    <div class="inputBox" ref="box" :style="{height:height+'px',transition:'0.2s'}">
+    <div class="inputBox" ref="box" :style="{height:contentheight+'px'}">
           <!-- <textarea ref="textarea" class="tarea" :style="{height:height+'rem'}"  v-model="value" @input="onput" @keydown="keyDw" :autofocus="true" @scroll="rowScroll">
 
           </textarea> -->
-          <el-input
+          <div class="send">
+            <!-- <div class="text" :style="{'-webkit-user-select':'text'}" @input="change" contenteditable="true"></div> -->
+            <!-- <textarea v-model="textarea1" @input="change" ref="textarea" :style="{height:height}"></textarea> -->
+            <el-input
           :style="{marginBottom:marginBottom}"
           ref='textArea'
   type="textarea"
   autosize
   placeholder="请输入内容"
+  class="tarea"
+  @input="oninput"
+  @blur="blur"
   v-model="textarea1">
+
 </el-input>
+<el-button class="sendButton" type="info" icon="el-icon-message" circle @click="sendMSG"></el-button>
+</div>
+
+
          <!-- <div class="bottom"><span class="tips">Ctrl+Enter换行</span><el-button @click.native="send">发送</el-button></div> -->
     </div>
 </template>
@@ -19,30 +30,29 @@
 export default {
     data(){
         return{
+          value:'',
            textarea1:'',
            heightArray:[],
-           height:'0',
+           height:'.6rem',
+           contentheight:'',
            marginBottom:'',
+           overType:'scroll'
         }
     },
     computed:{
-       
+
     },
     watch:{
-      textarea1(){
-           let height=this.$refs.textArea.$refs.textarea.offsetHeight+5
 
-           this.height=height;
-           this.$emit('setHeight',height)
-          //  this.marginBottom=-this.$refs.textArea.$refs.textarea.offsetHeight/2+'px'
-
-          // this.height=this.$refs.textArea.$refs.textarea.offsetHeight+this.$refs.box.offsetHeight
-      }
     },
     mounted(){
+
       this.$nextTick(()=>{
-        this.height=this.$refs.textArea.$refs.textarea.offsetHeight+5;
-        this.$emit('setHeight',this.height)
+        // console.log(this.$refs.textarea.scrollHeight)
+        // console.log(this.$refs.textarea.offsetHeight)
+        this.contentheight=this.$refs.textArea.$refs.textarea.offsetHeight+5
+
+        this.$emit('setHeight',this.contentheight)
         // console.log(this.$refs.textArea)
         // this.marginBottom=-this.$refs.textArea.$refs.textarea.offsetHeight/2+'px'
       })
@@ -51,6 +61,18 @@ export default {
       // autoTextarea
     },
     methods:{
+      oninput(){
+        setTimeout(() => {
+          this.contentheight=this.$refs.textArea.$refs.textarea.offsetHeight+5;
+
+        this.$emit('setHeight',this.contentheight)
+        }, 1);
+
+            // this.height=this.$refs.textArea.scrollHeight+2+'px'
+            // console.log(this.$refs.textarea.scrollHeight)
+      },
+      blur(){
+      },
       rowScroll(e){
 
       },
@@ -63,12 +85,12 @@ export default {
                       this.value=''
         }
       },
-        send(){
-
-            this.$emit('send',this.value)
+        sendMSG(){
+            this.$emit('send',this.textarea1)
         },
         // onBlur(){},
       onput(val){
+
         //  console.log(this.$refs.textarea)
         // this.height=(this.$refs.textarea.scrollHeight/100)
 
@@ -80,26 +102,46 @@ export default {
 </script>
 <style lang="scss">
 .inputBox{
+  background-color: #F5F5F5;
   position: fixed;
   bottom:0;
   left: 0;
   width:100%;
-  background-color: red;
-  display: flex;
-  align-items: center;
+  // background-color: red;
+  // display: flex;
+  // align-items: center;
   // height: 40px;
   // display: flex;
   // align-items: center;
-  .el-textarea{
-    // padding: 10px 0;
-    // position:absolute;
-    // bottom: 50%;
+  .send{
+     position: relative;
+     height: inherit;
+     .text{
+       position: absolute;
+       left: 0;
+       padding: 0.1rem;
+       box-sizing: border-box;
+       width: 3rem;
+       max-height: 0.92rem;
+      //  height: 0.6rem;
+       font-size: .24rem;
+       transition: 0.2s;
+     }
 textarea{
-    
+    border:none;
+    max-height: 1.5rem;
+    overflow-y: visible;
+    box-sizing: border-box;
+    // transition: 0.3s;
+    position:absolute;
+    left: 0.3rem;
+    bottom:0.05rem;
+    // height: 0.4rem;
+    font-size: 0.3rem !important;
     // position:absolute;
     // bottom:0px;
-      border-radius: 0.15rem;
-    width: 7rem;
+      border-radius: 0.2rem;
+    width: 6.5rem;
     background-color: #ffffff;
     // height: 100px;
     // line-height: 1;
@@ -110,18 +152,27 @@ textarea{
     // border:none;
     // border:0;
     outline:none;
-    padding:0 0.3rem 0 0.1rem;
+    padding:0.1rem 0.3rem 0.1rem 0.1rem;
     // padding-top: 0.05rem;
     // padding-left:0.1rem;
     box-sizing: border-box;
 }
-  }
+
 
 .tarea{
+  height: inherit;
   //  border-top:1px solid #d6d6d6;
   //  margin-right: 12px;
   //  width: calc(100vw - 32px)
 }
+.sendButton{
+  right: 0.08rem;
+  bottom:0.08rem;
+  position:absolute;
+  padding: 0.1rem;
+}
+  }
+
 .bottom{
   text-align: right;
   .tips{

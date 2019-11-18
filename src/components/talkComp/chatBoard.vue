@@ -1,10 +1,23 @@
 <template>
+
     <div class="chatBoard" ref="chatBoard" :style="{height:height}">
-       <p v-for="(item,index) in chatList" :key="index" :style="{textAlign:item.from==user?'right':'left'}">{{item.value}}</p>
+      <better-scroll ref="scroll" @scroll="scroll">
+                        <div class="content" v-for="(item,index) in chatList" :key="index">
+                                                   <p :class="[item.from==user?'ItemUser':'ItemChatter']"  ><span class="item clearfix">{{item.value}}</span></p>
+
+                        </div>
+
+        
+
+      </better-scroll>
     </div>
 </template>
 <script>
+import betterScroll from '../scroll/betterScroll'
 export default {
+  components:{
+    betterScroll
+  },
     data(){
         return{
 
@@ -13,11 +26,11 @@ export default {
     props:{
         cut:{
             type:Number,
-            default:''
+            default:0
         },
         user:{
-          type:String,
-          default:""
+          type:Object,
+          default:{}
         },
         chatList:{
             type:Array,
@@ -32,20 +45,90 @@ export default {
         }
     },
     mounted(){
+      setTimeout(()=>{
+      this.toBottom();
+
+      },300)
       //  this.toBottom();
     },
     methods:{
+      scroll(e){
+        console.log(e)
+      },
        toBottom(){
-           this.$refs.chatBoard.scrollTop=this.$refs.chatBoard.scrollHeight
+         this.$nextTick(()=>{
+             this.$refs.scroll.scrollTo(0,this.$refs.scroll.scroll.maxScrollY,200)
+
+         })
        }
     },
 }
 </script>
 <style lang="scss">
 .chatBoard{
-    background-color: #ffffff;
-    overflow-y: scroll;
-    flex:1;
+   .scrollContent{
+      // height: inherit;
+      .content{
+        padding: 0.1rem;
+      }
+   }
+    background-color: #eeeeee;
+    // overflow-y: scroll;
+    // flex:1;
+    .ItemUser{
+      margin-right: 0.2rem;
+      // padding-top:0.02rem;
+     justify-content: flex-end;
+     .item{
+         background-color: #00FF7F;
+       }
+    }
+     .ItemChatter{
+       margin-left: 0.2rem;
+       .item{
+         background-color: #ffffff;
+       }
+     }
+    .ItemUser,.ItemChatter{
+      padding-top:0.3rem;
+      display: flex;
+        padding-top:0.02rem;
+        // max-width: 3.8rem;
+        // text-align: right;
+        // float: right;
+        // justify-content:flex-end;
+
+      // height: 1rem;
+      // float: right;
+      // text-align: right;
+      .item{
+        font-size: .28rem;
+        max-width: 3.5rem;
+        word-break: break-all;
+        overflow: hidden;
+        border-radius: 0.1rem;
+        padding: 0.1rem;
+        max-width: 3.5rem;
+
+         display: block;
+        //  float:right;
+
+      }
+      .clearfix{
+        zoom: 1;
+
+      }
+      .clearfix::after{
+
+          content:"";
+          display: block;
+          height: 0;
+          clear: both;
+          visibility: hidden;
+
+
+      }
+    }
 }
 
 </style>
