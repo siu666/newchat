@@ -9,7 +9,7 @@
 <script type="text/ecmascript-6">
     import BScroll from 'better-scroll'
     // import BScroll from 'better-scroll';//引入better-scroll
-  
+
     //详细参数可以了解better-scroll的文档
     export default {
         props: {
@@ -118,5 +118,8 @@
    .wrapper{
        height: 100%;
        overflow: hidden;
+       .scrollContent{
+          // height: 100%;
+       }
    }
 </style>

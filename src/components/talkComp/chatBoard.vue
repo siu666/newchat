@@ -46,6 +46,7 @@ export default {
     },
     mounted(){
       setTimeout(()=>{
+      console.log(this.$refs.scroll.scroll)
       this.toBottom();
 
       },300)
@@ -56,8 +57,11 @@ export default {
         console.log(e)
       },
        toBottom(){
+         let vm=this
          this.$nextTick(()=>{
-             this.$refs.scroll.scrollTo(0,this.$refs.scroll.scroll.maxScrollY,200)
+             vm.$forceUpdate();
+             vm.$refs.scroll.scroll.refresh();
+             vm.$refs.scroll.scrollTo(0,vm.$refs.scroll.scroll.maxScrollY,200)
 
          })
        }

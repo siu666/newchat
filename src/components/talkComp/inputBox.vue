@@ -33,7 +33,7 @@ export default {
         return{
           value:'',
            textarea1:'',
-           heightArray:[],
+           heiArr:[],
            height:'.6rem',
            contentheight:'',
            marginBottom:'',
@@ -63,7 +63,6 @@ export default {
     },
     methods:{
       choosePhoto(){
-        alert('2')
          let cmr = plus.camera.getCamera();
      cmr.captureImage(function(p) {
       plus.io.resolveLocalFileSystemURL(p, function(entry) {
@@ -76,11 +75,23 @@ export default {
       filter: 'image'
      });
       },
-      oninput(){
+      oninput(e){
         setTimeout(() => {
-          this.contentheight=this.$refs.textArea.$refs.textarea.offsetHeight+5;
+            //   this.contentheight=this.$refs.textArea.$refs.textarea.offsetHeight+5
+            //  this.$emit('setHeight',this.contentheight)
+            this.heiArr.push(this.$refs.textArea.$refs.textarea.offsetHeight);
+            if(this.heiArr.length>2){
+                this.heiArr.splice(0,1);
+                if(this.heiArr[0]!=this.heiArr[1]){
+                   this.contentheight=this.heiArr[1]+5;
 
-         this.$emit('setHeight',this.contentheight)
+                  this.$emit('setHeight',this.contentheight)
+                }
+            }
+
+
+
+
         }, 1);
 
             // this.height=this.$refs.textArea.scrollHeight+2+'px'

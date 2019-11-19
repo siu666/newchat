@@ -87,7 +87,7 @@ methods:{
   setHeight(val){
 
       this.cut=Number(val)+Number(this.$refs.header.$el.offsetHeight);
-      this.$refs.chatBoard.$refs.scroll.refresh();
+
       this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom();
       })
