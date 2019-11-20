@@ -93,13 +93,18 @@ methods:{
       })
   },
   send(val){
-        this.$store.dispatch('goSetChatList',{from:this.user,value:val,chatter:this.chatter,isRecv:false,isGroup:this.chatter.length>1,chatId:this.$store.state.currentChatId})
+        this.$store.dispatch('goSetChatList',{from:this.user,value:val.value,chatter:this.chatter,isRecv:false,isGroup:this.chatter.length>1,chatId:this.$store.state.currentChatId,type:val.type})
 
         // this.chatList.push( {from:this.user,value:val,to:this.to}  )
         this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom()
         })
-        this.$socket.emit('send', {from:this.$store.state.loginUser,value:val,chatter:this.chatter,chatId:this.$store.getters.currentChatId})
+        if(val.type=='photo'){
+            alert(val.value[0].src)
+            val.value[0].src=encodeURIComponent(val.value[0].src);
+
+        }
+        this.$socket.emit('send', {from:this.$store.state.loginUser,value:val.value,chatter:this.chatter,chatId:this.$store.getters.currentChatId,type:val.type})
   },
   getData(val){
       this.value=val

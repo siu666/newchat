@@ -1,5 +1,6 @@
 <template>
     <div class="inputBox" ref="box" :style="{height:contentheight+'px'}">
+
           <!-- <textarea ref="textarea" class="tarea" :style="{height:height+'rem'}"  v-model="value" @input="onput" @keydown="keyDw" :autofocus="true" @scroll="rowScroll">
 
           </textarea> -->
@@ -19,7 +20,8 @@
 
 </el-input>
 <el-button class="sendButton" type="info" icon="el-icon-message" circle @click="sendMSG"></el-button>
-<img class="photoButton" :src="require('../../../static/photo.jpg')" @click="choosePhoto" />
+<!-- <img class="photoButton" :src="require('../../../static/photo.jpg')" @click="choosePhoto" /> -->
+<input ref="file" type="file" accept="image/gif, image/jpeg, image/jpg, image/png, image/svg" multiple="multiple" lable="img" class="imgChoose" @change="imgChoose" />
 </div>
 
 
@@ -32,6 +34,7 @@ export default {
     data(){
         return{
           value:'',
+          files:[],
            textarea1:'',
            heiArr:[],
            height:'.6rem',
@@ -62,6 +65,76 @@ export default {
       // autoTextarea
     },
     methods:{
+      imgChoose(file){
+          let fileList = this.$refs.file.files
+
+            let tempList = []; //每次点击+号后选择的图片信息
+            for (let i = 0, len = fileList.length; i < len; i++) {
+                let fileItem = {
+                    Id: this.index++,
+                    name: fileList[i].name,
+                    size: fileList[i].size,
+                    file: fileList[i]
+                }
+                //将图片文件转成Base64
+                let reader = new FileReader()
+                reader.onloadend = (e) => {
+                    //压缩图片并存到fileItem中
+                    this.getBase64(e.target.result).then((url) => {
+                        this.$set(fileItem, 'src', url)
+                    })
+
+                }
+                //判断图片大小是否超出限制
+             if (fileItem.size > this.maxSize) {
+                    Toast(this.lang.dynamic_over_size)
+                } else {
+                    reader.readAsDataURL(fileList[i])
+                    tempList.push(fileItem)
+                    this.files.push(fileItem)
+                }
+            }
+            this.$emit('send',{type:'photo',value:this.files})
+            setTimeout(() => {
+                this.$emit('getFiles', tempList)
+            }, 300)
+            this.files.splice(9)
+      },
+      getBase64(url) {
+            let self = this;
+            let Img = new Image(),
+                dataURL = '';
+            Img.src = url;
+            let p = new Promise(function (resolve, reject) {
+                Img.onload = function () { //要先确保图片完整获取到，这是个异步事件
+                    let canvas = document.createElement("canvas"), //创建canvas元素
+                        width = Img.width, //确保canvas的尺寸和图片一样
+                        height = Img.height;
+                    // 默认将长宽设置为图片的原始长宽，这样在长宽不超过最大长度时就不需要再处理
+                    let ratio = width / height,
+                        maxLength = 100,
+                        newHeight = height,
+                        newWidth = width;
+                    // 在长宽超过最大长度时，按图片长宽比例等比缩小
+                    if (width > maxLength || height > maxLength) {
+
+                        if (width > height) {
+                            newWidth = maxLength;
+                            newHeight = maxLength / ratio;
+                        } else {
+                            newWidth = maxLength * ratio;
+                            newHeight = maxLength;
+                        }
+                    }
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    canvas.getContext("2d").drawImage(Img, 0, 0, newWidth, newHeight); //将图片绘制到canvas中
+                    dataURL = canvas.toDataURL('image/png', 0.5); //转换图片为dataURL
+                    resolve(dataURL);
+                };
+            });
+            return p
+        },
       choosePhoto(){
          let cmr = plus.camera.getCamera();
      cmr.captureImage(function(p) {
@@ -112,7 +185,7 @@ export default {
         }
       },
         sendMSG(){
-            this.$emit('send',this.textarea1)
+            this.$emit('send',{value:this.textarea1,type:"string"})
         },
         // onBlur(){},
       onput(val){
@@ -133,6 +206,14 @@ export default {
   bottom:0;
   left: 0;
   width:100%;
+  .imgContent{
+    position:absolute;
+    top: -3rem;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+    background:red;
+  }
   // background-color: red;
   // display: flex;
   // align-items: center;
@@ -197,7 +278,7 @@ textarea{
   position:absolute;
   padding: 0.1rem;
 }
-.photoButton{
+.imgChoose{
   position: absolute;
   right: 0;
   bottom: 0;

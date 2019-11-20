@@ -36,6 +36,7 @@ io.sockets.on('connection', (socket) => {
     console.log('用户'+DATA.data+'进入')
   });
   socket.on('send', (DATA) => {
+    console.log(DATA.value)
     DATA.chatter.forEach(item=>{
       if(!array[item.userId]){
 

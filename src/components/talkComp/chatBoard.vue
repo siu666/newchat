@@ -3,8 +3,8 @@
     <div class="chatBoard" ref="chatBoard" :style="{height:height}">
       <better-scroll ref="scroll" @scroll="scroll">
                         <div class="content" v-for="(item,index) in chatList" :key="index">
-                                                   <p :class="[item.from==user?'ItemUser':'ItemChatter']"  ><span class="item clearfix">{{item.value}}</span></p>
-
+                                                   <p v-if="item.type=='string'" :class="[item.from==user?'ItemUser':'ItemChatter']"  ><span class="item clearfix">{{item.value}}</span></p>
+                                                   <img v-if="item.type=='photo'" :src="item.value[0].src"/>
                         </div>
 
 
@@ -46,7 +46,6 @@ export default {
     },
     mounted(){
       setTimeout(()=>{
-      console.log(this.$refs.scroll.scroll)
       this.toBottom();
 
       },300)

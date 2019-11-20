@@ -9,7 +9,6 @@ function random(){
     return num
 }
 function setId(obj){
-  console.log(obj)
     let arr=[];
     let id="";
     obj.chatter.forEach(item=>{
