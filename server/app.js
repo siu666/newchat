@@ -10,6 +10,9 @@ var usersRouter = require('./routes/users');
 const server=require('http').Server(app)
 const io=require('socket.io')(server)
 var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.all('/getimg',function(req,res,next){
   console.log(req.query)
   console.log(req.body)
@@ -31,7 +34,6 @@ io.sockets.on('connection', (socket) => {
        console.log(data)
   })
   socket.on('enter', (DATA) => {
-      console.log('123'+socket.id)
     // if(!array[DATA.data]){
       array[DATA.data]=socket.id
 
@@ -57,7 +59,6 @@ io.sockets.on('connection', (socket) => {
         };
 
          unread[item.userId].unreadList.push(DATA)
-         console.log(unread)
          return
       }
      io.to(array[item.userId]).emit('message',DATA)
@@ -76,8 +77,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(bodyParser());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
