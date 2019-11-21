@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var formidable = require('formidable')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -14,10 +15,14 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.all('/getimg',function(req,res,next){
-  console.log(req.query)
-  console.log(req.body)
-  res.json({
-    status:'223'
+  var form = new formidable.IncomingForm();
+  // form.uploadDir = path.join(__dirname, '../public/images/'); //文件保存的临时目录为static文件夹（文件夹不存在会报错，一会接受的file中的path就是这个）
+  // form.maxFieldsSize = 1 * 1024 * 1024; //用户头像大小限制为最大1M    
+  form.keepExtensions = true; //使用文件的原扩展名
+ 
+  form.parse(req, function (err, fields, file) {
+      console.log(fields)
+      console.log(file)
   })
 })
 server.listen(8081,function(){

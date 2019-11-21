@@ -100,9 +100,27 @@ methods:{
         this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom()
         })
-        axios.post('/getimg',{a:"123",b:"234"}).then(res=>{
-                   console.log(res)
-        })
+        var formData = new FormData();
+      for (let key in val.value[0]) {
+        formData.append(key, val.value[0][key]);
+      }
+      console.log(formData)
+      axios({
+        method: "post",
+
+        url: "http://localhost:3000/getimg",
+
+        anync: true,
+        contentType: false,
+        processData: false,
+
+        data: formData,
+        header: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(res=>{
+        console.log(res)
+      })
         this.$socket.emit('send', {from:this.$store.state.loginUser,value:val.value,chatter:this.chatter,chatId:this.$store.getters.currentChatId,type:val.type})
   },
   getData(val){
