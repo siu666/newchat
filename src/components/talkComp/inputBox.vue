@@ -67,7 +67,7 @@ export default {
     methods:{
       imgChoose(file){
           let fileList = this.$refs.file.files
-
+            this.files=[];
             let tempList = []; //每次点击+号后选择的图片信息
             for (let i = 0, len = fileList.length; i < len; i++) {
                 let fileItem = {
@@ -94,6 +94,7 @@ export default {
                     this.files.push(fileItem)
                 }
             }
+            console.log(this.files)
             this.$emit('send',{type:'photo',value:this.files})
             setTimeout(() => {
                 this.$emit('getFiles', tempList)

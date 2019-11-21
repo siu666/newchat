@@ -45,10 +45,10 @@ export default {
         }
     },
     mounted(){
-      setTimeout(()=>{
-      this.toBottom();
+      // setTimeout(()=>{
+      // this.toBottom();
 
-      },300)
+      // },300)
       //  this.toBottom();
     },
     methods:{
@@ -56,13 +56,14 @@ export default {
         console.log(e)
       },
        toBottom(){
-         let vm=this
+         setTimeout(()=>{
          this.$nextTick(()=>{
-             vm.$forceUpdate();
-             vm.$refs.scroll.scroll.refresh();
-             vm.$refs.scroll.scrollTo(0,vm.$refs.scroll.scroll.maxScrollY,200)
+             this.$refs.scroll.refresh();
+             this.$refs.scroll.scrollTo(0,this.$refs.scroll.scroll.maxScrollY,200)
 
          })
+         },21)
+
        }
     },
 }

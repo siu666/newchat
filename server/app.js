@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
@@ -9,6 +10,13 @@ var usersRouter = require('./routes/users');
 const server=require('http').Server(app)
 const io=require('socket.io')(server)
 var app = express();
+app.all('/getimg',function(req,res,next){
+  console.log(req.query)
+  console.log(req.body)
+  res.json({
+    status:'223'
+  })
+})
 server.listen(8081,function(){
   console.log('Node app start at port 3000')
 })
@@ -23,12 +31,13 @@ io.sockets.on('connection', (socket) => {
        console.log(data)
   })
   socket.on('enter', (DATA) => {
-      console.log(socket.id)
+      console.log('123'+socket.id)
     // if(!array[DATA.data]){
       array[DATA.data]=socket.id
 
     // }
     if(unread[DATA.data]){
+
        io.to(array[DATA.data]).emit('getUnread',unread[DATA.data].unreadList)
        delete(unread[DATA.data])
     }
@@ -36,7 +45,7 @@ io.sockets.on('connection', (socket) => {
     console.log('用户'+DATA.data+'进入')
   });
   socket.on('send', (DATA) => {
-    console.log(DATA.value)
+
     DATA.chatter.forEach(item=>{
       if(!array[item.userId]){
 
@@ -58,6 +67,7 @@ io.sockets.on('connection', (socket) => {
     // toSocket.emit('')
   });
 });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -66,6 +76,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

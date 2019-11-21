@@ -11,6 +11,7 @@ import {addListen} from './inout'
 import chatHeader from './talkComp/header'
 import ChatBoard from './talkComp/chatBoard'
 import Test from './talkComp/test'
+import axios from 'axios'
 export default {
     data(){
       return{
@@ -99,11 +100,9 @@ methods:{
         this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom()
         })
-        if(val.type=='photo'){
-            alert(val.value[0].src)
-            val.value[0].src=encodeURIComponent(val.value[0].src);
-
-        }
+        axios.post('/getimg',{a:"123",b:"234"}).then(res=>{
+                   console.log(res)
+        })
         this.$socket.emit('send', {from:this.$store.state.loginUser,value:val.value,chatter:this.chatter,chatId:this.$store.getters.currentChatId,type:val.type})
   },
   getData(val){
