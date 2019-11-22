@@ -77,8 +77,9 @@ export default {
   if (fileList) {
     //将文件以Data URL形式读入页面
     imgUrlBase64 = reader.readAsDataURL(fileList);
-     console.log(reader)
+
     reader.onload =async function (e) {
+      console.log(reader.result.length)
       //var ImgFileSize = reader.result.substring(reader.result.indexOf(",") + 1).length;//截取base64码部分（可选可不选，需要与后台沟通）
       if (AllowImgFileSize != 0 && AllowImgFileSize < reader.result.length) {
         alert('上传失败，请上传不大于2M的图片！');
@@ -86,7 +87,6 @@ export default {
       } else {
         //执行上传操作
         let p1=await _this.getBase64(reader.result)
-        console.log(p1)
         _this.$emit('send',{value:p1,type:'photo'})
       }
     }
@@ -123,6 +123,7 @@ export default {
                     canvas.getContext("2d").drawImage(Img, 0, 0, newWidth, newHeight); //将图片绘制到canvas中
                     dataURL = canvas.toDataURL('image/png', 1); //转换图片为dataURL
                     // console.log(dataURL)
+                    console.log(dataURL.length)
                     resolve(dataURL);
                 };
             });

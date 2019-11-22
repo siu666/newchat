@@ -3,8 +3,8 @@
     <div class="chatBoard" ref="chatBoard" :style="{height:height}">
       <better-scroll ref="scroll" @scroll="scroll">
                         <div class="content" v-for="(item,index) in chatList" :key="index">
-                                                   <p v-if="item.type=='string'" :class="[item.from==user?'ItemUser':'ItemChatter']"  ><span class="item clearfix">{{item.value}}</span></p>
-                                                   <img v-if="item.type=='photo'" :src="item.value"/>
+                                                   <p v-if="item.type=='string'" :class="[item.from==user?'ItemUser':'ItemChatter']"><span class="item clearfix">{{item.value}}</span></p>
+                                                   <div v-if="item.type=='photo'" :class="[item.from==user?'ItemUser':'ItemChatter']"   ><img :src="item.value" /></div>
                         </div>
 
 
