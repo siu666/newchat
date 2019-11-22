@@ -94,33 +94,34 @@ methods:{
       })
   },
   send(val){
+        console.log(val)
         this.$store.dispatch('goSetChatList',{from:this.user,value:val.value,chatter:this.chatter,isRecv:false,isGroup:this.chatter.length>1,chatId:this.$store.state.currentChatId,type:val.type})
-
+        console.log(this.$store.state.chatList)
         // this.chatList.push( {from:this.user,value:val,to:this.to}  )
         this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom()
         })
         var formData = new FormData();
-      for (let key in val.value[0]) {
-        formData.append(key, val.value[0][key]);
-      }
-      console.log(formData)
-      axios({
-        method: "post",
+      // for (let key in val.value[0]) {
+      //   formData.append(key, val.value[0][key]);
+      // }
+      // console.log(formData)
+      // axios({
+      //   method: "post",
 
-        url: "http://localhost:3000/getimg",
+      //   url: "http://localhost:3000/getimg",
 
-        anync: true,
-        contentType: false,
-        processData: false,
+      //   anync: true,
+      //   contentType: false,
+      //   processData: false,
 
-        data: formData,
-        header: {
-          "Content-Type": "multipart/form-data"
-        }
-      }).then(res=>{
-        console.log(res)
-      })
+      //   data: formData,
+      //   header: {
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // }).then(res=>{
+      //   console.log(res)
+      // })
         this.$socket.emit('send', {from:this.$store.state.loginUser,value:val.value,chatter:this.chatter,chatId:this.$store.getters.currentChatId,type:val.type})
   },
   getData(val){

@@ -65,48 +65,39 @@ export default {
       // autoTextarea
     },
     methods:{
-      imgChoose(file){
-          let fileList = this.$refs.file.files
-            this.files=[];
-            let tempList = []; //每次点击+号后选择的图片信息
-            for (let i = 0, len = fileList.length; i < len; i++) {
-                let fileItem = {
-                    Id: this.index++,
-                    name: fileList[i].name,
-                    size: fileList[i].size,
-                    file: fileList[i]
-                }
-                //将图片文件转成Base64
-                let reader = new FileReader()
-                reader.onloadend = (e) => {
-                    //压缩图片并存到fileItem中
-                    this.getBase64(e.target.result).then((url) => {
-                        this.$set(fileItem, 'src', url)
-                    })
+     async imgChoose(file){
+          let fileList = this.$refs.file.files[0]
 
-                }
-                //判断图片大小是否超出限制
-             if (fileItem.size > this.maxSize) {
-                    Toast(this.lang.dynamic_over_size)
-                } else {
-                    reader.readAsDataURL(fileList[i])
-                    tempList.push(fileItem)
-                    this.files.push(fileItem)
-                }
-            }
-            console.log(this.files)
-            this.$emit('send',{type:'photo',value:this.files})
-            setTimeout(() => {
-                this.$emit('getFiles', tempList)
-            }, 300)
-            this.files.splice(9)
+  var reader = new FileReader();
+
+  //上传图片最大值(单位字节)（ 2 M = 2097152 B ）超过2M上传失败
+  var AllowImgFileSize = 2100000;
+  var imgUrlBase64;
+  let _this=this
+  if (fileList) {
+    //将文件以Data URL形式读入页面
+    imgUrlBase64 = reader.readAsDataURL(fileList);
+     console.log(reader)
+    reader.onload =async function (e) {
+      //var ImgFileSize = reader.result.substring(reader.result.indexOf(",") + 1).length;//截取base64码部分（可选可不选，需要与后台沟通）
+      if (AllowImgFileSize != 0 && AllowImgFileSize < reader.result.length) {
+        alert('上传失败，请上传不大于2M的图片！');
+        return;
+      } else {
+        //执行上传操作
+        let p1=await _this.getBase64(reader.result)
+        console.log(p1)
+        _this.$emit('send',{value:p1,type:'photo'})
+      }
+    }
+  }
       },
       getBase64(url) {
             let self = this;
             let Img = new Image(),
                 dataURL = '';
             Img.src = url;
-            let p = new Promise(function (resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 Img.onload = function () { //要先确保图片完整获取到，这是个异步事件
                     let canvas = document.createElement("canvas"), //创建canvas元素
                         width = Img.width, //确保canvas的尺寸和图片一样
@@ -130,11 +121,11 @@ export default {
                     canvas.width = newWidth;
                     canvas.height = newHeight;
                     canvas.getContext("2d").drawImage(Img, 0, 0, newWidth, newHeight); //将图片绘制到canvas中
-                    dataURL = canvas.toDataURL('image/png', 0.5); //转换图片为dataURL
+                    dataURL = canvas.toDataURL('image/png', 1); //转换图片为dataURL
+                    // console.log(dataURL)
                     resolve(dataURL);
                 };
             });
-            return p
         },
       choosePhoto(){
          let cmr = plus.camera.getCamera();
