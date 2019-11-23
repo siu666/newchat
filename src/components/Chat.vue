@@ -99,12 +99,22 @@ components:{
     }
   },
   created(){
+     let _this=this
      this.sockets.subscribe('getUnread', (data) => {
-       data.forEach(item=>{
-         item.isRecv=true;
-         item.isGroup=item.chatter.length>1
-        this.$store.dispatch('goSetChatList',item)
-       })
+       for(var i=1;i<data.length;i++){
+    (function(i){
+        setTimeout(function(){
+          console.log(i)
+            data[i].isRecv=true;
+         data[i].isGroup=data[i].chatter.length>1
+         _this.$store.dispatch('goSetChatList',data[i])
+        },10*i);
+    })(i);
+
+}
+      //  data.forEach(item=>{
+
+      //  })
     });
     this.sockets.subscribe('message', (data) => {
     //   data.chatter=data.from
@@ -114,7 +124,7 @@ components:{
     data.isGroup=data.chatter.length>1;
     data.isRecv=true;
      this.$store.dispatch('goSetChatList',data);
-     
+
      if(this.currentChatId){
        setTimeout(()=>{
         this.$refs.talk.$refs.chatBoard.toBottom()

@@ -104,7 +104,7 @@ export default {
                         height = Img.height;
                     // 默认将长宽设置为图片的原始长宽，这样在长宽不超过最大长度时就不需要再处理
                     let ratio = width / height,
-                        maxLength = 100,
+                        maxLength = 300,
                         newHeight = height,
                         newWidth = width;
                     // 在长宽超过最大长度时，按图片长宽比例等比缩小

@@ -4,7 +4,7 @@
       <better-scroll ref="scroll" @scroll="scroll">
                         <div class="content" v-for="(item,index) in chatList" :key="index">
                                                    <p v-if="item.type=='string'" :class="[item.from==user?'ItemUser':'ItemChatter']"><span class="item clearfix">{{item.value}}</span></p>
-                                                   <div v-if="item.type=='photo'" :class="[item.from==user?'ItemUser':'ItemChatter']"   ><img :src="item.value" /></div>
+                                                   <div v-if="item.type=='photo'" :preview="'0'" :class="[item.from==user?'ItemUser':'ItemChatter']"   ><img :src="item.value" /></div>
                         </div>
 
 
@@ -58,6 +58,7 @@ export default {
        toBottom(){
          setTimeout(()=>{
          this.$nextTick(()=>{
+           this.$previewRefresh()
              this.$refs.scroll.refresh();
              this.$refs.scroll.scrollTo(0,this.$refs.scroll.scroll.maxScrollY,200)
 

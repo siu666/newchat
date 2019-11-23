@@ -6,6 +6,14 @@ import router from './router'
 // import ElementUI from 'element-ui';
 import { Button, Select,Input,CheckboxGroup,Checkbox } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+// import preview from 'vue-photo-preview'
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+let options = {
+  fullscreenEl: false
+};
+Vue.use(preview, options)
+Vue.use(preview)
 import store from './store'
 // import BackGround from './components/bg';
 Vue.use(Button)

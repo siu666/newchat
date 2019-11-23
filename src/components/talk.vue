@@ -100,6 +100,7 @@ methods:{
         this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom()
         })
+        // axios.post('/getimg',{val})
         var formData = new FormData();
       // for (let key in val.value[0]) {
       //   formData.append(key, val.value[0][key]);
