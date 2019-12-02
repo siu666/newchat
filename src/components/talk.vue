@@ -95,7 +95,7 @@ methods:{
   },
   send(val){
         this.$store.dispatch('goSetChatList',{from:this.user,value:val.value,chatter:this.chatter,isRecv:false,isGroup:this.chatter.length>1,chatId:this.$store.state.currentChatId,type:val.type})
-
+        
         // this.chatList.push( {from:this.user,value:val,to:this.to}  )
         this.$nextTick(()=>{
           this.$refs.chatBoard.toBottom()

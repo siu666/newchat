@@ -21,7 +21,7 @@
 </el-input>
 <el-button class="sendButton" type="info" icon="el-icon-message" circle @click="sendMSG"></el-button>
 <!-- <img class="photoButton" :src="require('../../../static/photo.jpg')" @click="choosePhoto" /> -->
-<input ref="file" type="file" accept="image/gif, image/jpeg, image/jpg, image/png, image/svg" multiple="multiple" lable="img" class="imgChoose" @change="imgChoose" />
+<input ref="file" type="file"  multiple="multiple" lable="img" class="imgChoose" @change="imgChoose" />
 </div>
 
 
@@ -66,8 +66,12 @@ export default {
     },
     methods:{
      async imgChoose(file){
-          let fileList = this.$refs.file.files[0]
-
+           
+          let fileList = this.$refs.file.files[0];
+          console.log(fileList.type.substring(fileList.type.lastIndexOf('.'),fileList.type.length))
+  if(fileList.type.indexOf('.')>0&&fileList.type.substring(fileList.type.lastIndexOf('.')+1,fileList.type.length)=='document'){
+         alert('2')
+  }
   var reader = new FileReader();
 
   //上传图片最大值(单位字节)（ 2 M = 2097152 B ）超过2M上传失败
@@ -77,17 +81,17 @@ export default {
   if (fileList) {
     //将文件以Data URL形式读入页面
     imgUrlBase64 = reader.readAsDataURL(fileList);
-
+    
     reader.onload =async function (e) {
-      console.log(reader.result.length)
       //var ImgFileSize = reader.result.substring(reader.result.indexOf(",") + 1).length;//截取base64码部分（可选可不选，需要与后台沟通）
       if (AllowImgFileSize != 0 && AllowImgFileSize < reader.result.length) {
         alert('上传失败，请上传不大于2M的图片！');
         return;
       } else {
         //执行上传操作
-        let p1=await _this.getBase64(reader.result)
-        _this.$emit('send',{value:p1,type:'photo'})
+        let p1=await _this.getBase64(reader.result);
+
+        _this.$emit('send',{value:reader.result,type:'photo'})
       }
     }
   }

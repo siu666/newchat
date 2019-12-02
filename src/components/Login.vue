@@ -1,6 +1,7 @@
 <template>
      <div class="container">
-         <back-ground></back-ground>
+       <img preview="0" :src="require('../../static/bg.jpg')"/>
+         <!-- <back-ground></back-ground> -->
          <div class="box">
             <p class="title">Login</p>
                <div class="content"><span class="front">User</span><el-input v-model="user" placeholder="请输入用户名"></el-input></div>
