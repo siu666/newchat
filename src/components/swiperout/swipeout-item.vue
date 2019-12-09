@@ -1,5 +1,5 @@
 
-  
+
 <template>
   <div class="vux-swipeout-item"
   @touchstart="start"
@@ -26,7 +26,7 @@ export default {
   name: 'swipeout-item',
   props: {
     currentClick:{
-       type:Number,
+       type:String,
        default:''
     },
     sensitivity: {
@@ -85,9 +85,13 @@ export default {
       }
     },
     start (ev) {
-      if( ev.target.nodeName.toLowerCase() !== 'button'&&this.$parent.$children[this.currentClick].styles['transform']&&this.$parent.$children[this.currentClick].styles['transform'].indexOf('(0px,0,0)')===-1){
-            this.$parent.$children[this.currentClick].setOffset(0,true)
+      console.log(this.target)
+      this.currentItem=this.$parent.$children.filter(item=>item.currentClick==this.currentClick)[0];
+      // console.log(this.currentItem)
+      if( ev.target.nodeName.toLowerCase() !== 'button'&&this.currentItem.styles['transform']&&this.currentItem.styles['transform'].indexOf('(0px,0,0)')===-1){
+            this.currentItem.setOffset(0,true)
       }
+      console.log('2323')
       if (this.disabled || this.isOpen || ev.target.nodeName.toLowerCase() === 'button') {
         return
       }
@@ -97,7 +101,7 @@ export default {
             item.setOffset(0, true,true,index)
           })
                   //  const openItems = this.$parent.$children.filter(item => item.$data.styles.transform.indexOf('(0px, 0, 0)') === -1)
-      
+
       //   const openItems = this.$parent.$children.filter(item => item.$data.styles.transform.indexOf('(0px, 0, 0)') === -1)
       //   if (openItems.length > 0) {
       //     openItems.forEach(item => {
@@ -107,19 +111,19 @@ export default {
       //     return
       //   }
       }
-      if(!this.$parent.$children[this.currentClick].styles['transform']){
-        this.$parent.$children[this.currentClick].styles={
+      if(!this.currentItem.styles['transform']){
+        this.currentItem.styles={
          transform:'translate3d(0px,0,0)'
       }
       let styles = JSON.parse(JSON.stringify(this.buttonBoxStyle))
-      if (this.transitionMode === 'follow'&&this.$parent.$children[this.currentClick].styles['transform']) {
-        let offset = this.$parent.$children[this.currentClick].styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
-        
-        
-        
+      if (this.transitionMode === 'follow'&&this.currentItem.styles['transform']) {
+        let offset = this.currentItem.styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
+
+
+
         styles.transform = `translate3d(${offset}px, 0, 0)`;
       }
-      this.$parent.$children[this.currentClick].buttonStyle=styles
+      this.currentItem.buttonStyle=styles
       }
       const touch = ev.touches ? ev.touches[0] : ev
       this.pageX = touch.pageX
@@ -201,7 +205,7 @@ export default {
       this.direction = ''
     },
     setOffset (x, animated = false, force,resetIndex=-1) {
-      
+
       this.isAnimated = animated
       if (this.disabled && !force) {
         return
@@ -220,17 +224,17 @@ export default {
         this.distX = this.leftMenuWidth
       }
       if (animated && this.target) {
-        
+
         // document.getElementsByClassName('vux-swipeout-button-box')[1].classList.add('vux-swipeout-content-animated');
 
-                  this.$parent.$children[this.currentClick].buttonStyle.transition="transform 0.2s"
+        this.currentItem.buttonStyle.transition="transform 0.2s"
         this.target && this.target.classList.add('vux-swipeout-content-animated')
         var cb = (function (self, target) {
           return function () {
             target.classList.remove('vux-swipeout-content-animated')
             self.isAnimated = false;
             if(resetIndex>=0){
-                 
+
                  self.styles={};//重置之前打开的3d硬件加速，从而每次只会有当前点击的transate3d硬件加速
             }
             self.buttonStyle={}
@@ -241,18 +245,18 @@ export default {
         this.target.addEventListener('webkitTransitionEnd', cb)
         this.target.addEventListener('transitionend', cb)
       }
-      this.$parent.$children[this.currentClick].styles={
+      this.currentItem.styles={
          transform:`translate3d(${x}px,0,0)`
       }
-            if (this.transitionMode === 'follow'&&this.$parent.$children[this.currentClick].styles['transform']) {
-              let offset = this.$parent.$children[this.currentClick].styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
+            if (this.transitionMode === 'follow'&&this.currentItem.styles['transform']) {
+              let offset = this.currentItem.styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
       if (offset < 0) {
           offset = 0
         }
-        
-      this.$parent.$children[this.currentClick].buttonStyle.
+
+      this.currentItem.buttonStyle.
          transform=`translate3d(${offset}px,0,0)`
-         
+
             }
       console.log()
       // this.styles.transform = 'translate3d(' + x + 'px, 0, 0)'
@@ -303,16 +307,16 @@ export default {
     },
     rightButtonBoxStyle () {
       let styles = JSON.parse(JSON.stringify(this.buttonBoxStyle))
-      if (this.transitionMode === 'follow'&&this.$parent.$children[this.currentClick].styles['transform']) {
-        
-        let offset = this.$parent.$children[this.currentClick].styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
+      if (this.transitionMode === 'follow'&&this.currentItem.styles['transform']) {
+
+        let offset = this.currentItem.styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
         if (offset < 0) {
           offset = 0
         }
         if (this.isAnimated) {
           styles.transition = 'transform 0.2s'
         }
-        
+
         styles.transform = `translate3d(${offset}px, 0, 0)`;
         console.log(styles)
       }
@@ -330,6 +334,7 @@ export default {
       animated: false,
       isAnimated: false,
       isOpen: false,
+      currentItem:{},
       buttonStyle:{
 
       },
