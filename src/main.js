@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+
+import Vconsole from 'vconsole'
+const vConsole = new Vconsole()
+
 // import ElementUI from 'element-ui';
 import { Button, Select,Input,CheckboxGroup,Checkbox } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -12,6 +16,7 @@ import 'vue-photo-preview/dist/skin.css'
 let options = {
   fullscreenEl: false
 };
+Vue.use(vConsole)
 Vue.use(preview, options)
 Vue.use(preview)
 import store from './store'
