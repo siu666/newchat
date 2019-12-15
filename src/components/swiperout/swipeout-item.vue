@@ -91,7 +91,6 @@ export default {
       if( ev.target.nodeName.toLowerCase() !== 'button'&&this.currentItem.styles['transform']&&this.currentItem.styles['transform'].indexOf('(0px,0,0)')===-1){
             this.currentItem.setOffset(0,true)
       }
-      console.log('2323')
       if (this.disabled || this.isOpen || ev.target.nodeName.toLowerCase() === 'button') {
         return
       }
@@ -245,6 +244,7 @@ export default {
         this.target.addEventListener('webkitTransitionEnd', cb)
         this.target.addEventListener('transitionend', cb)
       }
+      console.log(x)
       this.currentItem.styles={
          transform:`translate3d(${x}px,0,0)`
       }
