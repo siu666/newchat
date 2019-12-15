@@ -12,7 +12,7 @@
     <div class="vux-swipeout-button-box vux-swipeout-button-box-left" :style="leftButtonBoxStyle" v-show="distX >= 0">
       <slot name="left-menu"></slot>
     </div>
-    <div class="vux-swipeout-button-box" :style="buttonStyle" v-show="distX <= 0">
+    <div class="vux-swipeout-button-box" :style="buttonStyle" >
       <slot name="right-menu"></slot>
     </div>
     <div class="vux-swipeout-content" :style="styles" @mousedown="onContentClick" @touchstart="onContentClick" ref="content">
@@ -94,6 +94,10 @@ export default {
       if (this.disabled || this.isOpen || ev.target.nodeName.toLowerCase() === 'button') {
         return
       }
+      console.log(this.distX)
+      // if (this.disabled || this.isOpen || ev.target.nodeName.toLowerCase() === 'button') {
+      //   return
+      // }
       if (this.$parent.$options._componentTag === 'swipeout') {
           const openItems=this.$parent.$children.filter(item=>item.isOpen)
               openItems.forEach((item,index) => {
@@ -110,19 +114,22 @@ export default {
       //     return
       //   }
       }
-      if(!this.currentItem.styles['transform']){
-        this.currentItem.styles={
-         transform:'translate3d(0px,0,0)'
-      }
+            // if(!this.currentItem.styles['transform']){
+
+      if(!this.currentItem.style['transform']){
+        this.currentItem.style.transform='translate3d(0px,0,0)'
+      //   this.currentItem.styles={
+      //    transform:'translate3d(0px,0,0)'
+      // }
       let styles = JSON.parse(JSON.stringify(this.buttonBoxStyle))
-      if (this.transitionMode === 'follow'&&this.currentItem.styles['transform']) {
-        let offset = this.currentItem.styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
+      // if (this.transitionMode === 'follow'&&this.currentItem.styles['transform']) {
+      //   let offset = this.currentItem.styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
 
 
 
-        styles.transform = `translate3d(${offset}px, 0, 0)`;
-      }
-      this.currentItem.buttonStyle=styles
+      //   styles.transform = `translate3d(${offset}px, 0, 0)`;
+      // }
+      // this.currentItem.buttonStyle=styles
       }
       const touch = ev.touches ? ev.touches[0] : ev
       this.pageX = touch.pageX
@@ -163,6 +170,7 @@ export default {
       }
       if (this.valid === true) {
         if (Math.abs(this.distX) <= this.menuWidth) {
+          console.log('232')
           this.setOffset(this.distX, false)
         } else {
           const extra = (Math.abs(this.distX) - this.menuWidth) * 0.5
@@ -222,12 +230,12 @@ export default {
       } else if (x > 0 && Math.abs(x) === this.leftMenuWidth) {
         this.distX = this.leftMenuWidth
       }
-      if (animated && this.target) {
+      if (animated && this.currentItem) {
 
         // document.getElementsByClassName('vux-swipeout-button-box')[1].classList.add('vux-swipeout-content-animated');
 
-        this.currentItem.buttonStyle.transition="transform 0.2s"
-        this.target && this.target.classList.add('vux-swipeout-content-animated')
+        // this.currentItem.buttonStyle.transition="transform 0.2s"
+        this.currentItem && this.currentItem.classList.add('vux-swipeout-content-animated')
         var cb = (function (self, target) {
           return function () {
             target.classList.remove('vux-swipeout-content-animated')
@@ -240,14 +248,15 @@ export default {
             target.removeEventListener('webkitTransitionEnd', cb)
             target.removeEventListener('transitionend', cb)
           }
-        })(this, this.target)
+          })(this, this.currentItem)
+        // })(this, this.target)
         this.target.addEventListener('webkitTransitionEnd', cb)
         this.target.addEventListener('transitionend', cb)
       }
-      console.log(x)
-      this.currentItem.styles={
-         transform:`translate3d(${x}px,0,0)`
-      }
+      this.currentItem.style.transform=`translate3d(${x}px,0,0)`
+      // this.currentItem.styles={
+      //    transform:`translate3d(${x}px,0,0)`
+      // }
             if (this.transitionMode === 'follow'&&this.currentItem.styles['transform']) {
               let offset = this.currentItem.styles.transform.indexOf('(0px, 0, 0)') === -1 ? this.rightMenuWidth - Math.abs(this.distX) : this.rightMenuWidth
       if (offset < 0) {
